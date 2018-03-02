@@ -3,8 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"strconv"
-	"time"
 
 	sse "github.com/alexandrevicenzi/go-sse"
 )
@@ -38,22 +36,13 @@ func main() {
 	http.Handle("/post", http.HandlerFunc(sendResponse))
 	http.Handle("/events/", s)
 
-	go func() {
-		for {
-			s.SendMessage("/events/channel-1", sse.SimpleMessage(time.Now().String()))
-			time.Sleep(5 * time.Second)
-		}
-	}()
+	// go func() {
+	// 	for {
+	// 		s.SendMessage("/events/channel-1", sse.SimpleMessage(time.Now().String()))
+	// 		time.Sleep(5 * time.Second)
+	// 	}
+	// }()
 
-	go func() {
-		i := 0
-		for {
-			i++
-			s.SendMessage("/events/channel-2", sse.SimpleMessage(strconv.Itoa(i)))
-			time.Sleep(5 * time.Second)
-		}
-	}()
-
-	log.Println("Listening at :3000")
-	http.ListenAndServe(":3000", nil)
+	log.Println("Listening at :8080")
+	http.ListenAndServe(":8080", nil)
 }
