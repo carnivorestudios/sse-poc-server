@@ -11,12 +11,14 @@ import (
 
 func sendResponse(w http.ResponseWriter, r *http.Request) {
 	message := r.URL.Query().Get("m")
-	message = "Hello " + message
+	s.SendMessage("/events/channel-1", sse.SimpleMessage(message))
 	w.Write([]byte(message))
 }
 
+var s *sse.Server
+
 func main() {
-	s := sse.NewServer(&sse.Options{
+	s = sse.NewServer(&sse.Options{
 		// Increase default retry interval to 10s.
 		RetryInterval: 10 * 1000,
 		// CORS headers
